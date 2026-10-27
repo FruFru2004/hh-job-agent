@@ -1,0 +1,42 @@
+# ---------- Поиск ----------
+search:
+  queries:                      # каждый запрос ищется отдельно
+    - "аналитик данных"
+    - "BI аналитик"
+    - "аналитик продаж"
+  area: 1                       # 1 = Москва, 2019 = Московская область, 113 = вся Россия
+  experience: "between1And3"    # noExperience | between1And3 | between3And6 | moreThan6 | "" (любой)
+  period_days: 3                # только свежие вакансии
+  only_with_salary: false
+  salary_from: 0                # 0 = не фильтровать
+  max_per_query: 100
+  extra_params: {}              # любые параметры hh, напр. {schedule: remote}
+  title_exclude:                # вакансии с этими словами в названии пропускаются сразу (без LLM)
+    - "senior"
+    - "lead"
+    - "ведущий"
+    - "руководитель"
+    - "стажер"
+  employer_blacklist: []        # названия компаний, куда не откликаться
+
+# ---------- LLM ----------
+llm:
+  provider: "openai"            # openai (любой OpenAI-совместимый: OpenRouter, Ollama, DeepSeek...) | anthropic
+  model: "anthropic/claude-sonnet-4.5"
+  base_url: "https://openrouter.ai/api/v1"   # для Ollama: http://localhost:11434/v1
+  api_key_env: "LLM_API_KEY"    # имя переменной окружения с ключом
+  min_score: 70                 # откликаться, только если соответствие >= этого (0-100)
+
+# ---------- Отклики ----------
+apply:
+  dry_run: true                 # true = только оценивает и пишет письма, НЕ откликается. Поставь false, когда проверишь
+  daily_limit: 30               # у hh жёсткий лимит 200/сутки; держись сильно ниже
+  delay_seconds: [40, 120]      # случайная пауза между откликами
+  resume_title: "Аналитик данных"   # часть названия резюме на hh, которым откликаться
+  skip_with_test: true          # пропускать вакансии с анкетой/тестом от работодателя
+  send_letter: true
+
+# ---------- Браузер ----------
+browser:
+  profile_dir: "./browser_profile"   # тут хранится твоя сессия hh (после команды login)
+  headless: false
